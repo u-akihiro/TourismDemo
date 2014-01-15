@@ -13,6 +13,9 @@ function initialize() {
   
   var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
   
+  //一番新しいinfowindo
+  latestInfoWindow = null;
+  
   //Ajax
   $.ajax({
     url: "/parking/show"
@@ -34,7 +37,12 @@ function initialize() {
         });
         
         google.maps.event.addListener(marker, 'click', function(){
+          if (latestInfoWindow != null  ) {
+            latestInfoWindow.close();
+          }
+          
           infowindow.open(map, marker);
+          latestInfoWindow = infowindow;
         });
       });
     });
