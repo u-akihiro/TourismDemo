@@ -22,7 +22,8 @@ function initialize() {
         var marker = new google.maps.Marker({
           position: new google.maps.LatLng(this["http://www.w3.org/2003/01/geo/wgs84_pos#lat"][0]["value"], this["http://www.w3.org/2003/01/geo/wgs84_pos#long"][0]["value"]),
           map: map,
-          title: this["http://smartercity.jp/ug#title"][0]["value"]
+          title: this["http://smartercity.jp/ug#title"][0]["value"],
+          animation: google.maps.Animation.DROP
         });
       });
     });
