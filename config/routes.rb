@@ -1,4 +1,6 @@
 TourismDemo::Application.routes.draw do
+  get "tourist_spot/index"
+  get "tourist_spot/show"
   root "links#index"
   get "links/index"
   get "parking/index"

@@ -1,0 +1,62 @@
+<%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"  %>
+<div id="places"></div>
+<!-- google map 描画位置 -->
+<div id="map-canvas"></div>
+
+<script>
+
+function newline2br(str) {
+  return str.replace(/[\n\r]/g, "<br />");
+}
+  
+function initialize() {
+  var mapOptions = {
+    zoom: 10,
+    center: new google.maps.LatLng(35.021247, 135.755597)
+  }
+  
+  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  
+  //一番新しいinfowindo
+  latestInfoWindow = null;
+  
+  //Ajax
+  $.ajax({
+    url: "/tourist_spot/show"
+  }).done(function(data){
+    $.each(data.places, function(){
+      $.each(this, function(){
+        
+        //マーカー作成
+        var marker = new google.maps.Marker({
+          position: new google.maps.LatLng(this["http://www.w3.org/2003/01/geo/wgs84_pos#lat"][0]["value"], this["http://www.w3.org/2003/01/geo/wgs84_pos#long"][0]["value"]),
+          map: map,
+          title: this["http://smartercity.jp/ug#title"][1]["value"],
+          animation: google.maps.Animation.DROP
+        });
+        
+        //インフォウィンドウ作成
+        //var content = newline2br(this["http://smartercity.jp/ug#usageFee"][0]["value"]);
+				var content = this["http://smartercity.jp/ug#address"][0]["value"];
+        var infowindow = new google.maps.InfoWindow({
+          content: content
+        });
+        
+        google.maps.event.addListener(marker, 'click', function(){
+          if (latestInfoWindow != null  ) {
+            latestInfoWindow.close();
+          }
+          
+          infowindow.open(map, marker);
+          latestInfoWindow = infowindow;
+        });
+      });
+    });
+  }).fail(function(data){
+    console.log('ajax error');
+  });
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+</script>
