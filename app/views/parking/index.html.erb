@@ -5,6 +5,10 @@
 
 <script>
 
+function newline2br(str) {
+  return str.replace(/[\n\r]/g, "<br />");
+}
+  
 function initialize() {
   var mapOptions = {
     zoom: 10,
@@ -32,8 +36,9 @@ function initialize() {
         });
         
         //インフォウィンドウ作成
+        var content = newline2br(this["http://smartercity.jp/ug#usageFee"][0]["value"]);
         var infowindow = new google.maps.InfoWindow({
-          content: this["http://smartercity.jp/ug#usageFee"][0]["value"]
+          content: content
         });
         
         google.maps.event.addListener(marker, 'click', function(){
